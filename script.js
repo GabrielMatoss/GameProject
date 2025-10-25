@@ -77,10 +77,10 @@ function atualizarPosicao() {
     if (movendo.direita) robo.x += vel;
 
     // Colisões com as bordas
-    if (robo.x < robo.width / 2) robo.x = robo.width / 2; // esquerda
-    if (robo.x > canvas.width - robo.width / 2) robo.x = canvas.width - robo.width / 2; // direita
+    if (robo.x < robo.width / 3) robo.x = robo.width / 3; // esquerda
+    if (robo.x > canvas.width - robo.width / 3) robo.x = canvas.width - robo.width / 3; // direita
     if (robo.y < robo.heigth / 2) robo.y = robo.heigth / 2; // topo
-    if (robo.y > canvas.height - robo.heigth / 2) robo.y = canvas.height - robo.heigth / 2; // base
+    if (robo.y > canvas.height - robo.heigth / 2.5) robo.y = canvas.height - robo.heigth / 2.5; // base
 }
 
 function animacao() {
