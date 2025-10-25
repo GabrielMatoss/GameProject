@@ -2,8 +2,8 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 let robo = {
-    x: 0,
-    y: 150,
+    x: 55,
+    y: 455,
     img: new Image(),
     width: 65,
     heigth: 70,
