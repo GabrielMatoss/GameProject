@@ -2,7 +2,7 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 // ----- CONFIGURAÇÕES DE FÍSICA -----
-let gravidade = 0.8;
+let gravidade = 1.2;
 let forcaPulo = -18;
 let noChao = false;
 
@@ -17,7 +17,7 @@ let vel = 6;
 // ----- OBJETO DO ROBÔ -----
 let robo = {
     x: 100,
-    y: 0,
+    y: 605,
     vy: 0,
     width: 80,
     heigth: 90,
@@ -57,19 +57,49 @@ robo.imgParado.src = "./assets/robot-idle.png";
 robo.imgCorrendo.src = "./assets/robot-run.png";
 robo.imagemAtual = robo.imgParado;
 
-// ----- PLATAFORMA ÚNICA (chão total) -----
+// ----- PLATAFORMA ÚNICA (CHÃO) -----
 let plataforma = {
     x: 0,
-    y: canvas.height - 120, // fica bem no final do canvas
+    y: canvas.height - 120,
     width: canvas.width,
     height: 40
 };
 
-// ----- DESENHAR PLATAFORMA -----
 function desenharPlataforma() {
     ctx.fillStyle = "#00000000";
     ctx.fillRect(plataforma.x, plataforma.y, plataforma.width, plataforma.height);
 }
+
+// ----- NUVEM QUE SE MOVE NO TOPO -----
+let nuvem = {
+    x: 100,
+    y: 50, // topo
+    largura: 300,
+    altura: 200,
+    img: new Image(),
+    velocidadeX: 3,
+    direcao: 1,
+    contadorFlutuar: 0,
+
+    mover: function() {
+        // Movimento horizontal de um lado para o outro
+        this.x += this.velocidadeX * this.direcao;
+        if (this.x + this.largura > canvas.width || this.x < 0) {
+            this.direcao *= -1; // muda direção
+        }
+
+        // Movimento vertical de flutuação suave
+        this.contadorFlutuar += 0.05;
+        this.y += Math.sin(this.contadorFlutuar) * 0.8;
+    },
+
+    desenha: function() {
+        ctx.drawImage(this.img, this.x, this.y, this.largura, this.altura);
+    }
+};
+
+// Caminho da imagem da nuvem
+nuvem.img.src = "./assets/nuvem.png";
 
 // ----- ATUALIZAR POSIÇÃO DO ROBÔ -----
 function atualizarPosicao() {
@@ -106,8 +136,13 @@ function atualizarPosicao() {
 // ----- LOOP DE ANIMAÇÃO -----
 function animacao() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Atualiza e desenha tudo
     atualizarPosicao();
     desenharPlataforma();
+
+    nuvem.mover();
+    nuvem.desenha();
 
     if (movendo.esquerda || movendo.direita) {
         robo.imagemAtual = robo.imgCorrendo;
@@ -118,6 +153,7 @@ function animacao() {
     robo.desenha();
     requestAnimationFrame(animacao);
 }
+
 animacao();
 
 // ----- CONTROLES -----
