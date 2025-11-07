@@ -97,7 +97,7 @@ let movendo = {
 };
 
 // Velocidade
-let vel = 5;
+let vel = 3;
 
 function atualizarPosicao() {
     if (movendo.cima) robo.y -= vel;
