@@ -1,21 +1,20 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
+// ----- CONFIGURAÇÕES -----
 let gravidade = 1.2;
 let forcaPulo = -18;
 let noChao = false;
 let vel = 6;
 let pontuacao = 0;
 let jogoAtivo = true;
-
-// MOVIMENTO
 let movendo = { esquerda: false, direita: false };
 
-// CONTROLE DE ANIMAÇÃO
+// ----- CONTROLE DE ANIMAÇÃO -----
 let frameContador = 0;
-let tempoTrocaFrame = 10; // quanto menor, mais rápida a troca
+let tempoTrocaFrame = 10;
 
-// ROBO
+// ----- ROBO -----
 let robo = {
     x: 100,
     y: 605,
@@ -26,10 +25,11 @@ let robo = {
     imgParado: new Image(),
     imgCorrendo1: new Image(),
     imgCorrendo2: new Image(),
-    imgCorrendo3: new Image(), // 🔹 nova imagem adicionada
+    imgCorrendo3: new Image(),
     imgMorto: new Image(),
     imagemAtual: null,
     viradoEsquerda: false,
+
     desenha: function () {
         let img = this.imagemAtual;
         ctx.save();
@@ -43,7 +43,7 @@ let robo = {
     }
 };
 
-// 🔹 Caminhos atualizados das imagens
+// Caminhos das imagens
 robo.imgParado.src = "./assets/robot-idle.png";
 robo.imgCorrendo1.src = "./assets/robo1.png";
 robo.imgCorrendo2.src = "./assets/robo2.png";
@@ -51,7 +51,7 @@ robo.imgCorrendo3.src = "./assets/robo3.png";
 robo.imgMorto.src = "./assets/robo_dano.png";
 robo.imagemAtual = robo.imgParado;
 
-// PLATAFORMA
+// ----- PLATAFORMA -----
 let plataforma = {
     x: 0,
     y: canvas.height - 120,
@@ -64,7 +64,7 @@ function desenharPlataforma() {
     ctx.fillRect(plataforma.x, plataforma.y, plataforma.width, plataforma.height);
 }
 
-// RAIOS
+// ----- RAIOS -----
 const raioImg = new Image();
 raioImg.src = "./assets/raio.png";
 let raios = [];
@@ -82,7 +82,7 @@ function criarRaio(xInicial, yInicial) {
             this.y += this.velocidade;
             if (this.y > canvas.height) this.ativo = false;
 
-            // Colisão com o robô
+            // colisão com o robô
             let roboLeft = robo.x - robo.width / 2;
             let roboRight = robo.x + robo.width / 2;
             let roboTop = robo.y - robo.heigth / 2;
@@ -91,9 +91,7 @@ function criarRaio(xInicial, yInicial) {
             if (this.x < roboRight && this.x + this.largura > roboLeft && this.y < roboBottom && this.y + this.altura > roboTop) {
                 this.ativo = false;
                 robo.vida -= 10;
-                if (robo.vida <= 0 && jogoAtivo) {
-                    morrerRobo();
-                }
+                if (robo.vida <= 0 && jogoAtivo) morrerRobo();
             }
         },
         desenha: function () {
@@ -102,7 +100,7 @@ function criarRaio(xInicial, yInicial) {
     };
 }
 
-// CRIAR NUVENS
+// ----- NUVENS -----
 function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
     let nuvem = {
         x: xInicial,
@@ -119,7 +117,6 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
         mover: function () {
             if (!this.ativa || !jogoAtivo) return;
 
-            // Movimento horizontal
             if (this.direcao === "esquerda") {
                 this.x -= this.velocidadeX;
                 if (this.x + this.largura < 0) this.resetarPosicao();
@@ -128,10 +125,8 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
                 if (this.x > canvas.width + this.largura) this.resetarPosicao();
             }
 
-            // Movimento leve flutuante
             this.y += Math.sin(Date.now() / 500) * 0.4;
 
-            // Disparo de raio aleatório
             this.tempoProximoRaio--;
             if (this.tempoProximoRaio <= 0) {
                 raios.push(criarRaio(this.x + this.largura / 2, this.y + this.altura / 2));
@@ -190,7 +185,7 @@ function gerarNuvensIniciais() {
 }
 gerarNuvensIniciais();
 
-// TIROS
+// ----- TIROS -----
 let tiros = [];
 function criarTiro() {
     return {
@@ -204,6 +199,7 @@ function criarTiro() {
             if (!jogoAtivo) return;
             this.y += this.velocidade;
             if (this.y + this.altura < 0) this.ativo = false;
+
             nuvensAtivas.forEach((nuvem) => {
                 if (
                     nuvem.ativa &&
@@ -225,10 +221,10 @@ function criarTiro() {
     };
 }
 
-// PARTÍCULAS
+// ----- PARTÍCULAS -----
 let particulas = [];
 
-// MORTE
+// ----- MORTE E REINÍCIO -----
 function morrerRobo() {
     jogoAtivo = false;
     robo.vida = 0;
@@ -241,7 +237,6 @@ function morrerRobo() {
     particulas = [];
 }
 
-// REINICIAR
 function reiniciarJogo() {
     robo.vida = 100;
     robo.imagemAtual = robo.imgParado;
@@ -255,11 +250,18 @@ function reiniciarJogo() {
     jogoAtivo = true;
 }
 
-// FÍSICA
+// ----- FÍSICA -----
 function atualizarPosicao() {
     if (!jogoAtivo) return;
-    if (movendo.esquerda) { robo.x -= vel; robo.viradoEsquerda = true; }
-    if (movendo.direita) { robo.x += vel; robo.viradoEsquerda = false; }
+
+    if (movendo.esquerda) {
+        robo.x -= vel;
+        robo.viradoEsquerda = true;
+    }
+    if (movendo.direita) {
+        robo.x += vel;
+        robo.viradoEsquerda = false;
+    }
 
     robo.vy += gravidade;
     robo.y += robo.vy;
@@ -275,7 +277,7 @@ function atualizarPosicao() {
     if (robo.x > canvas.width - robo.width / 2) robo.x = canvas.width - robo.width / 2;
 }
 
-// LOOP PRINCIPAL
+// ----- LOOP PRINCIPAL -----
 function animacao() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     desenharPlataforma();
@@ -287,7 +289,9 @@ function animacao() {
     tiros = tiros.filter((t) => t.ativo);
 
     particulas.forEach((p) => {
-        p.x += p.vx; p.y += p.vy; p.vida--;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vida--;
         ctx.fillStyle = "rgba(255,255,0," + p.vida / 30 + ")";
         ctx.fillRect(p.x, p.y, 4, 4);
     });
@@ -296,11 +300,10 @@ function animacao() {
     if (jogoAtivo) {
         atualizarPosicao();
 
-        // 🔹 Animação de caminhada com 3 imagens
+        // Animação de caminhada com 3 frames
         if (movendo.esquerda || movendo.direita) {
             frameContador++;
             let ciclo = frameContador % (tempoTrocaFrame * 3);
-
             if (ciclo < tempoTrocaFrame) {
                 robo.imagemAtual = robo.imgCorrendo1;
             } else if (ciclo < tempoTrocaFrame * 2) {
@@ -337,7 +340,7 @@ function animacao() {
     requestAnimationFrame(animacao);
 }
 
-// CONTROLES
+// ----- CONTROLES -----
 document.addEventListener("keydown", (e) => {
     if (!jogoAtivo && e.key.toLowerCase() === "r") {
         reiniciarJogo();
@@ -349,6 +352,7 @@ document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowUp" && noChao) { robo.vy = forcaPulo; noChao = false; }
     if (e.code === "Space") tiros.push(criarTiro());
 });
+
 document.addEventListener("keyup", (e) => {
     if (e.key === "ArrowLeft") movendo.esquerda = false;
     if (e.key === "ArrowRight") movendo.direita = false;
