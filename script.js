@@ -6,14 +6,12 @@ let musicaFundo = new Audio("./assets/dancing_robots.mp3");
 musicaFundo.loop = true;
 musicaFundo.volume = 0.5;
 
-// Função que inicia a música apenas quando o usuário interagir (requisito de navegadores)
 function iniciarMusica() {
     musicaFundo.play().catch(() => {});
     document.removeEventListener("keydown", iniciarMusica);
     document.removeEventListener("click", iniciarMusica);
 }
 
-// Listener que toca a música na primeira interação
 document.addEventListener("keydown", iniciarMusica);
 document.addEventListener("click", iniciarMusica);
 
@@ -26,10 +24,6 @@ let pontuacao = 0;
 let jogoAtivo = true;
 let movendo = { esquerda: false, direita: false };
 let podeAtirar = true;
-
-// ----- CONTROLE DE ANIMAÇÃO -----
-let frameContador = 0;
-let tempoTrocaFrame = 10;
 
 // ----- ROBO -----
 let robo = {
@@ -96,7 +90,7 @@ function desenharPlataforma() {
     ctx.fillRect(plataforma.x, plataforma.y, plataforma.width, plataforma.height);
 }
 
-// ----- RAIOS (inimigo) -----
+// ----- RAIOS -----
 const raioImg = new Image();
 raioImg.src = "./assets/raio.png";
 let raios = [];
@@ -121,7 +115,7 @@ function criarRaio(xInicial, yInicial) {
             let hb = robo.getHitbox();
             if (this.x < hb.right && this.x + this.largura > hb.left && this.y < hb.bottom && this.y + this.altura > hb.top) {
                 this.ativo = false;
-                robo.vida -= 10;
+                robo.vida -= 20;
                 robo.danoTimer = 10;
                 if (robo.vida <= 0 && jogoAtivo) morrerRobo();
             }
@@ -132,13 +126,13 @@ function criarRaio(xInicial, yInicial) {
     };
 }
 
-// ----- NUVENS (inimigos) -----
+// ----- NUVENS -----
 function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
     let nuvem = {
         x: xInicial,
         y: yInicial,
-        largura: 190,
-        altura: 130,
+        largura: 250,
+        altura: 175,
         img: new Image(),
         velocidadeX: velocidade,
         direcao: direcao,
@@ -216,6 +210,7 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
 
 let todasNuvens = [];
 let nuvensAtivas = [];
+
 function gerarNuvensIniciais() {
     todasNuvens = [];
     for (let i = 0; i < 8; i++) {
@@ -227,6 +222,26 @@ function gerarNuvensIniciais() {
     nuvensAtivas = todasNuvens.slice(0, 5);
 }
 gerarNuvensIniciais();
+
+// ----- DIFICULDADE DINÂMICA -----
+let tempoDecorrido = 0;
+let intervaloDificuldade = 600; // a cada ~10 segundos (60 FPS)
+let maxNuvensAtivas = 8;
+
+function atualizarDificuldade() {
+    if (!jogoAtivo) return;
+    tempoDecorrido++;
+
+    if (tempoDecorrido % intervaloDificuldade === 0) {
+        if (maxNuvensAtivas < todasNuvens.length) {
+            maxNuvensAtivas++;
+            nuvensAtivas = todasNuvens.slice(0, maxNuvensAtivas);
+        }
+
+        // também acelera um pouco as nuvens
+        todasNuvens.forEach(n => n.velocidadeX += 0.1);
+    }
+}
 
 // ----- TIROS -----
 const imgTiro = new Image();
@@ -300,6 +315,8 @@ function reiniciarJogo() {
     raios = [];
     tiros = [];
     particulas = [];
+    tempoDecorrido = 0;
+    maxNuvensAtivas = 5;
     jogoAtivo = true;
 }
 
@@ -332,6 +349,7 @@ function atualizarPosicao() {
 // ----- LOOP PRINCIPAL -----
 function animacao() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    atualizarDificuldade();
     desenharPlataforma();
 
     nuvensAtivas.forEach((n) => { n.mover(); n.desenha(); });
@@ -432,4 +450,4 @@ document.addEventListener("keyup", (e) => {
     if (e.code === "Space") podeAtirar = true;
 });
 
-window.onload = animacao;
+animacao();
