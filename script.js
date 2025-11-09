@@ -395,16 +395,24 @@ function animacao() {
     ctx.fillText("Pontos: " + pontuacao, canvas.width - 160, 35);
 
     // ----- GAME OVER -----
+   
     if (!jogoAtivo) {
         ctx.fillStyle = "rgba(0,0,0,0.7)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Texto principal (GAME OVER)
         ctx.fillStyle = "white";
         ctx.font = "bold 60px Arial";
-        ctx.fillText("GAME OVER", canvas.width / 2 - 180, canvas.height / 2 - 40);
+        let textoGameOver = "GAME OVER";
+        let larguraTextoGO = ctx.measureText(textoGameOver).width;
+        ctx.fillText(textoGameOver, (canvas.width - larguraTextoGO) / 2, canvas.height / 2 - 40);
+
+        // Texto secundário (Pressione R para reiniciar)
         ctx.fillStyle = "yellow";
         ctx.font = "30px Arial";
-        ctx.fillText("Pressione R para reiniciar", canvas.width / 2 - 200, canvas.height / 2 + 40);
-    }
+        let textoReiniciar = "Pressione R para reiniciar";
+        let larguraTextoReiniciar = ctx.measureText(textoReiniciar).width;
+        ctx.fillText(textoReiniciar, (canvas.width - larguraTextoReiniciar) / 2, canvas.height / 2 + 40);
+}
 
     requestAnimationFrame(animacao);
 }
