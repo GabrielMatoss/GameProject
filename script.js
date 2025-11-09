@@ -6,10 +6,9 @@ let musicaFundo = new Audio("./assets/dancing_robots.mp3");
 musicaFundo.loop = true;
 musicaFundo.volume = 0.5;
 
-<<<<<<< HEAD
-=======
+
 // Função que inicia a música apenas quando o usuário interagir
->>>>>>> 31f2e28 (menu)
+
 function iniciarMusica() {
     musicaFundo.play().catch(() => {});
     document.removeEventListener("keydown", iniciarMusica);
@@ -497,8 +496,6 @@ document.addEventListener("keyup", (e) => {
     if (e.key === "ArrowRight") movendo.direita = false;
 });
 
-<<<<<<< HEAD
-=======
 // Clique do botão de mute
 canvas.addEventListener("click", (e) => {
     let rect = canvas.getBoundingClientRect();
@@ -508,5 +505,5 @@ canvas.addEventListener("click", (e) => {
 });
 
 // Inicia a animação
->>>>>>> 31f2e28 (menu)
+ 
 animacao();
