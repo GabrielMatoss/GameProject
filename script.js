@@ -39,20 +39,27 @@ let robo = {
         ctx.save();
         if (this.viradoEsquerda) ctx.scale(-1, 1);
 
-        // se tomou dano, desenha overlay vermelho (pisca)
-        if (this.danoTimer > 0) {
-            ctx.globalAlpha = 0.6;
-            ctx.fillStyle = "rgba(255,0,0,0.5)";
-            ctx.fillRect(this.x - this.width / 2, this.y - this.heigth / 2, this.width, this.heigth);
-            ctx.globalAlpha = 1.0;
-            this.danoTimer--;
-        }
-
+        // desenha a imagem (após escala, tudo relativo)
         let img = this.imagemAtual;
         if (this.viradoEsquerda)
             ctx.drawImage(img, -this.x - this.width / 2, this.y - this.heigth / 2, this.width, this.heigth);
         else
             ctx.drawImage(img, this.x - this.width / 2, this.y - this.heigth / 2, this.width, this.heigth);
+
+        // se tomou dano, desenha overlay vermelho (pisca) sobre o sprite usando compositing correto
+        if (this.danoTimer > 0) {
+            // pintamos somente sobre os pixels já desenhados (source-atop)
+            ctx.globalCompositeOperation = "source-atop";
+            ctx.fillStyle = "rgba(255,0,0,0.35)";
+            // desenha o retângulo na área do sprite (mesma posição)
+            if (this.viradoEsquerda)
+                ctx.fillRect(-this.x - this.width / 2, this.y - this.heigth / 2, this.width, this.heigth);
+            else
+                ctx.fillRect(this.x - this.width / 2, this.y - this.heigth / 2, this.width, this.heigth);
+            ctx.globalCompositeOperation = "source-over";
+            this.danoTimer--;
+        }
+
         ctx.restore();
     },
 
@@ -99,7 +106,12 @@ function criarRaio(xInicial, yInicial) {
         mover: function () {
             if (!jogoAtivo) return;
             this.y += this.velocidade;
-            if (this.y > canvas.height) this.ativo = false;
+
+            // 🔹 Desativa o raio quando encostar na plataforma (evita sumiço além da tela)
+            if (this.y + this.altura >= plataforma.y) {
+                this.ativo = false;
+                return;
+            }
 
             // colisão com hitbox do robô
             let hb = robo.getHitbox();
@@ -117,6 +129,7 @@ function criarRaio(xInicial, yInicial) {
 }
 
 // ----- NUVENS (inimigos) -----
+// substituímos para usar receberDano() e efeito de tint vermelho suave
 function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
     let nuvem = {
         x: xInicial,
@@ -145,6 +158,9 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
                 raios.push(criarRaio(this.x + this.largura / 2, this.y + this.altura / 2));
                 this.tempoProximoRaio = Math.random() * 400 + 300;
             }
+
+            // diminui o tempo do flash de dano
+            if (this.danoTimer > 0) this.danoTimer--;
         },
 
         resetarPosicao: function () {
@@ -159,12 +175,25 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
 
         desenha: function () {
             if (!this.ativa) return;
+
+            ctx.save();
+            // desenha a nuvem normalmente
             ctx.drawImage(this.img, this.x, this.y, this.largura, this.altura);
+
+            // se está no timer de dano, aplica um tint vermelho suave sobre a própria imagem
             if (this.danoTimer > 0) {
+                ctx.globalCompositeOperation = "source-atop";
                 ctx.fillStyle = "rgba(255,0,0,0.35)";
                 ctx.fillRect(this.x, this.y, this.largura, this.altura);
-                this.danoTimer--;
+                ctx.globalCompositeOperation = "source-over";
             }
+            ctx.restore();
+        },
+
+        receberDano: function () {
+            this.vida--;
+            this.danoTimer = 10; // frames que vai piscar
+            if (this.vida <= 0) this.morrer();
         },
 
         morrer: function () {
@@ -208,7 +237,7 @@ function criarTiro() {
     // tiro sobe (y decresce) — mantive seu comportamento original
     return {
         x: robo.x,
-        y: robo.y - robo.heigth / 2,
+        y: robo.y - robo.heigth / 2 - 10,
         largura: 10,
         altura: 20,
         velocidade: -10,
@@ -234,9 +263,15 @@ function criarTiro() {
                     this.y + this.altura > hitbox.y
                 ) {
                     this.ativo = false;
-                    nuvem.vida--;
-                    nuvem.danoTimer = 8; // pisca quando leva tiro
-                    if (nuvem.vida <= 0) nuvem.morrer();
+                    // usa o método receberDano para aplicar o efeito suave
+                    if (typeof nuvem.receberDano === "function") {
+                        nuvem.receberDano();
+                    } else {
+                        // fallback (caso use versão antiga)
+                        nuvem.vida--;
+                        nuvem.danoTimer = 8;
+                        if (nuvem.vida <= 0 && nuvem.morrer) nuvem.morrer();
+                    }
                 }
             });
         },
