@@ -6,6 +6,10 @@ let musicaFundo = new Audio("./assets/dancing_robots.mp3");
 musicaFundo.loop = true;
 musicaFundo.volume = 0.5;
 
+<<<<<<< HEAD
+=======
+// Função que inicia a música apenas quando o usuário interagir
+>>>>>>> 31f2e28 (menu)
 function iniciarMusica() {
     musicaFundo.play().catch(() => {});
     document.removeEventListener("keydown", iniciarMusica);
@@ -14,6 +18,33 @@ function iniciarMusica() {
 
 document.addEventListener("keydown", iniciarMusica);
 document.addEventListener("click", iniciarMusica);
+
+// ----- BOTÃO DE MUTAR -----
+let botaoMute = {
+    x: 240, // posição à direita da barra de vida
+    y: 15,
+    largura: 30,
+    altura: 30,
+    mutado: false,
+
+    desenha: function () {
+        ctx.fillStyle = "white";
+        ctx.font = "24px Arial";
+        ctx.fillText(this.mutado ? "🔇" : "🔊", this.x, this.y + 25);
+    },
+
+    clicar: function (x, y) {
+        if (
+            x >= this.x &&
+            x <= this.x + this.largura &&
+            y >= this.y &&
+            y <= this.y + this.altura
+        ) {
+            this.mutado = !this.mutado;
+            musicaFundo.muted = this.mutado;
+        }
+    },
+};
 
 // ----- CONFIGURAÇÕES GERAIS -----
 let gravidade = 1.2;
@@ -246,8 +277,8 @@ function atualizarDificuldade() {
 // ----- TIROS -----
 const imgTiro = new Image();
 imgTiro.src = "./assets/boleba_energia.png";
-
 let tiros = [];
+
 function criarTiro() {
     return {
         x: robo.x,
@@ -389,6 +420,9 @@ function animacao() {
     ctx.strokeStyle = "black";
     ctx.strokeRect(30, 20, larguraMax, 20);
 
+    // ----- BOTÃO DE MUDO -----
+    botaoMute.desenha();
+
     // ----- PONTOS -----
 ctx.font = "bold 24px 'Press Start 2P', cursive";
 ctx.fillStyle = "#00d9ffff";
@@ -454,13 +488,25 @@ document.addEventListener("keydown", (e) => {
             if (jogoAtivo && robo.imagemAtual === robo.imgAtirando)
                 robo.imagemAtual = movendo.esquerda || movendo.direita ? robo.imgCorrendo : robo.imgParado;
         }, 120);
+        setTimeout(() => podeAtirar = true, 350);
     }
 });
 
 document.addEventListener("keyup", (e) => {
     if (e.key === "ArrowLeft") movendo.esquerda = false;
     if (e.key === "ArrowRight") movendo.direita = false;
-    if (e.code === "Space") podeAtirar = true;
 });
 
+<<<<<<< HEAD
+=======
+// Clique do botão de mute
+canvas.addEventListener("click", (e) => {
+    let rect = canvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    botaoMute.clicar(x, y);
+});
+
+// Inicia a animação
+>>>>>>> 31f2e28 (menu)
 animacao();
