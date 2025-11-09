@@ -390,9 +390,14 @@ function animacao() {
     ctx.strokeRect(30, 20, larguraMax, 20);
 
     // ----- PONTOS -----
-    ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
-    ctx.fillText("Pontos: " + pontuacao, canvas.width - 160, 35);
+ctx.font = "bold 24px 'Press Start 2P', cursive";
+ctx.fillStyle = "#00d9ffff";
+ctx.shadowColor = "#006effff";
+ctx.shadowBlur = 8;
+ctx.textAlign = "right";
+ctx.fillText("PONTOS: " + pontuacao, canvas.width - 40, 45);
+ctx.shadowBlur = 0;
+ctx.textAlign = "left";
 
     // ----- GAME OVER -----
    
