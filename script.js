@@ -1,6 +1,22 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
+// ----- MÚSICA DE FUNDO -----
+let musicaFundo = new Audio("./assets/dancing_robots.mp3");
+musicaFundo.loop = true;
+musicaFundo.volume = 0.5;
+
+// Função que inicia a música apenas quando o usuário interagir (requisito de navegadores)
+function iniciarMusica() {
+    musicaFundo.play().catch(() => {});
+    document.removeEventListener("keydown", iniciarMusica);
+    document.removeEventListener("click", iniciarMusica);
+}
+
+// Listener que toca a música na primeira interação
+document.addEventListener("keydown", iniciarMusica);
+document.addEventListener("click", iniciarMusica);
+
 // ----- CONFIGURAÇÕES GERAIS -----
 let gravidade = 1.2;
 let forcaPulo = -18;
@@ -103,7 +119,6 @@ function criarRaio(xInicial, yInicial) {
             }
 
             let hb = robo.getHitbox();
-            //AABB hitbox collision
             if (this.x < hb.right && this.x + this.largura > hb.left && this.y < hb.bottom && this.y + this.altura > hb.top) {
                 this.ativo = false;
                 robo.vida -= 10;
@@ -122,8 +137,8 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
     let nuvem = {
         x: xInicial,
         y: yInicial,
-        largura: 190, // ajustado para bater com a imagem real
-        altura: 130,  // idem
+        largura: 190,
+        altura: 130,
         img: new Image(),
         velocidadeX: velocidade,
         direcao: direcao,
@@ -162,7 +177,6 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
 
         desenha: function () {
             if (!this.ativa) return;
-
             ctx.save();
             ctx.drawImage(this.img, this.x, this.y, this.largura, this.altura);
             if (this.danoTimer > 0) {
@@ -214,7 +228,7 @@ function gerarNuvensIniciais() {
 }
 gerarNuvensIniciais();
 
-// ----- TIROS (do player) -----
+// ----- TIROS -----
 const imgTiro = new Image();
 imgTiro.src = "./assets/boleba_energia.png";
 
@@ -234,8 +248,6 @@ function criarTiro() {
 
             nuvensAtivas.forEach((nuvem) => {
                 if (!nuvem.ativa) return;
-
-                // Corrigido: hitbox mais justo (sem pegar bordas transparentes)
                 let hb = {
                     x: nuvem.x + nuvem.largura * 0.2,
                     y: nuvem.y + nuvem.altura * 0.2,
@@ -248,12 +260,7 @@ function criarTiro() {
                 let tiroTop = this.y;
                 let tiroBottom = this.y + this.altura;
 
-                if (
-                    tiroLeft < hb.x + hb.largura &&
-                    tiroRight > hb.x &&
-                    tiroTop < hb.y + hb.altura &&
-                    tiroBottom > hb.y
-                ) {
+                if (tiroLeft < hb.x + hb.largura && tiroRight > hb.x && tiroTop < hb.y + hb.altura && tiroBottom > hb.y) {
                     this.ativo = false;
                     nuvem.receberDano();
                 }
