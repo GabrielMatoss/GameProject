@@ -153,7 +153,7 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
             this.tempoProximoRaio--;
             if (this.tempoProximoRaio <= 0) {
                 raios.push(criarRaio(this.x + this.largura / 2, this.y + this.altura / 2));
-                this.tempoProximoRaio = Math.random() * 400 + 300;
+                this.tempoProximoRaio = Math.random() * 150 + 100;
             }
 
             if (this.danoTimer > 0) this.danoTimer--;
