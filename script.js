@@ -456,6 +456,8 @@ ctx.textAlign = "left";
 }
 
 // ----- CONTROLES -----
+let espacoPressionado = false; // controla se a barra está sendo segurada
+
 document.addEventListener("keydown", (e) => {
     if (!jogoAtivo && e.key.toLowerCase() === "r") {
         reiniciarJogo();
@@ -465,12 +467,17 @@ document.addEventListener("keydown", (e) => {
 
     if (e.key === "ArrowLeft") movendo.esquerda = true;
     if (e.key === "ArrowRight") movendo.direita = true;
-    if (e.key === "ArrowUp" && noChao) { robo.vy = forcaPulo; noChao = false; }
+    if (e.key === "ArrowUp" && noChao) { 
+        robo.vy = forcaPulo; 
+        noChao = false; 
+    }
 
-    if (e.code === "Space" && podeAtirar) {
-        podeAtirar = false;
+    // ----- ATIRAR ----- 
+    if (e.code === "Space" && !espacoPressionado) {
+        espacoPressionado = true; // marca que está pressionado
         tiros.push(criarTiro());
 
+        // partículas de tiro
         for (let i = 0; i < 10; i++) {
             particulas.push({
                 x: robo.x,
@@ -482,19 +489,23 @@ document.addEventListener("keydown", (e) => {
             });
         }
 
+        // troca a imagem do robo para atirando
         robo.imagemAtual = robo.imgAtirando;
         setTimeout(() => {
             if (jogoAtivo && robo.imagemAtual === robo.imgAtirando)
                 robo.imagemAtual = movendo.esquerda || movendo.direita ? robo.imgCorrendo : robo.imgParado;
         }, 120);
-        setTimeout(() => podeAtirar = true, 350);
     }
 });
 
 document.addEventListener("keyup", (e) => {
     if (e.key === "ArrowLeft") movendo.esquerda = false;
     if (e.key === "ArrowRight") movendo.direita = false;
+
+    // libera o espaço quando a tecla é solta
+    if (e.code === "Space") espacoPressionado = false;
 });
+
 
 // Clique do botão de mute
 canvas.addEventListener("click", (e) => {
