@@ -1,34 +1,30 @@
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+
+// ===== BOTÃO DE START E MENSAGEM =====
 const btnStart = document.getElementById("btnStart");
 const msgStart = document.getElementById("msgStart");
 let jogoIniciado = false;
-
-btnStart.addEventListener("click", () => {
-    btnStart.style.display = "none"; // esconde o botão
-    msgStart.style.display = "none"; // esconde a mensagem
-    jogoIniciado = true;
-    iniciarMusica();
-    jogoAtivo = true;
-    animacao(); // inicia o jogo
-});
-
-
 
 // ----- MÚSICA DE FUNDO -----
 let musicaFundo = new Audio("./assets/dancing_robots.mp3");
 musicaFundo.loop = true;
 musicaFundo.volume = 0.5;
 
-
-// Função que inicia a música apenas quando o usuário interagir
-
+// Função que inicia a música apenas quando o jogador clicar em START
 function iniciarMusica() {
     musicaFundo.play().catch(() => {});
-    document.removeEventListener("keydown", iniciarMusica);
-    document.removeEventListener("click", iniciarMusica);
 }
 
-document.addEventListener("keydown", iniciarMusica);
-document.addEventListener("click", iniciarMusica);
+// Quando clicar em START, inicia o jogo
+btnStart.addEventListener("click", () => {
+    btnStart.style.display = "none"; // esconde o botão
+    msgStart.style.display = "none"; // esconde a mensagem
+    jogoIniciado = true;
+    jogoAtivo = true; // ativa o jogo
+    iniciarMusica();
+    animacao(); // inicia o loop do jogo
+});
 
 // ----- BOTÃO DE MUTAR -----
 let botaoMute = {
@@ -56,6 +52,7 @@ let botaoMute = {
         }
     },
 };
+
 
 // ----- CONFIGURAÇÕES GERAIS -----
 let gravidade = 1.2;
@@ -308,8 +305,8 @@ function criarTiro() {
                 let hb = {
                     x: nuvem.x + nuvem.largura * 0.2,
                     y: nuvem.y + nuvem.altura * 0.2,
-                    largura: nuvem.largura * 0.6,
-                    altura: nuvem.altura * 0.6
+                    largura: nuvem.largura * 0.8,
+                    altura: nuvem.altura * 0.3
                 };
 
                 let tiroLeft = this.x - this.largura / 2;
