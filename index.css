@@ -1,64 +1,268 @@
+/* ===== NAVBAR ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 40px;
+  box-shadow: 0 0 20px rgba(0, 225, 255, 0.3);
+  z-index: 1000;
+}
+
+nav .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+nav .logo img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px #00e1ff);
+  animation: flutuarLogo 3s ease-in-out infinite;
+}
+
+@keyframes flutuarLogo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+nav .logo span {
+  font-size: 1.6rem;
+  color: #00e1ff;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px #00e1ff;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+nav ul li a:hover {
+  color: #00e1ff;
+  text-shadow: 0 0 8px #00e1ff;
+}
+
+/* ===== CONTEÚDO PRINCIPAL ===== */
 body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
-      font-family: 'Orbitron', sans-serif;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+  margin: 0;
+  padding-top: 100px; /* evita sobreposição da navbar */
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
+  font-family: 'Orbitron', sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
 h1 {
-      font-size: 3rem;
-      color: #00e1ff;
-      text-shadow: 0 0 20px #35bcfa, 0 0 40px #00e1ff;
-      margin-bottom: 50px;
-      animation: pulse 2s infinite alternate;
-    }
+  font-size: 3rem;
+  color: #00e1ff;
+  text-shadow: 0 0 20px #35bcfa, 0 0 40px #00e1ff;
+  margin-bottom: 30px;
+  animation: pulse 2s infinite alternate;
+  text-align: center;
+}
 
 @keyframes pulse {
-      from { text-shadow: 0 0 20px #00e1ff; }
-      to { text-shadow: 0 0 40px #00e1ff; }
-    }
+  from { text-shadow: 0 0 20px #00e1ff; }
+  to { text-shadow: 0 0 40px #00e1ff; }
+}
 
-    a {
-      text-decoration: none;
-      background: linear-gradient(90deg, #00e1ff, #00e1ff);
-      color: #000;
-      padding: 15px 40px;
-      border-radius: 30px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 20px rgba(44, 171, 255, 0.7);
-    }
+main {
+  max-width: 900px;
+  text-align: center;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 225, 255, 0.3);
+}
 
-a:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 30px rgb(52, 114, 230);
-    }
+h2 {
+  color: #00e1ff;
+  font-size: 2rem;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px #00e1ff;
+}
+
+p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  color: #ddd;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+  display: inline-block;
+}
+
+li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+a.botao {
+  text-decoration: none;
+  background: linear-gradient(90deg, #00e1ff, #00e1ff);
+  color: #000;
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 20px rgba(44, 171, 255, 0.7);
+  display: inline-block;
+  margin-top: 20px;
+}
+
+a.botao:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgb(52, 114, 230);
+}
+
 footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9rem;
-      color: #888;
-      text-align: center;
-    }
+  margin-top: 50px;
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+}
 
-    .robot {
-      position: absolute;
-      top: 10%;
-      right: 10%;
-      width: 120px;
-      opacity: 0.8;
-      animation: flutuar 3s ease-in-out infinite;
-    }
+/* ===== SEÇÃO SOBRE ===== */
+.sobre-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
 
-@keyframes flutuar {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+.texto-sobre {
+  flex: 1;
+  min-width: 300px;
+  text-align: left;
+}
+
+.texto-sobre h2 {
+  color: #00e1ff;
+  text-shadow: 0 0 10px #00e1ff;
+  margin-bottom: 15px;
+}
+
+.texto-sobre p {
+  margin-bottom: 15px;
+  color: #ccc;
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+.foto-sobre {
+  flex: 0 0 300px;
+  text-align: center;
+}
+
+.foto-sobre img {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #00e1ff;
+  box-shadow: 0 0 25px rgba(0, 225, 255, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.foto-sobre img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(0, 225, 255, 0.6);
+}
+
+/* ===== SEÇÃO SOBRE NÓS ===== */
+.sobre-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.card-integrante {
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(0, 225, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 225, 255, 0.2);
+  padding: 25px;
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-integrante:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 40px rgba(0, 225, 255, 0.6);
+}
+
+.card-integrante img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #00e1ff;
+  box-shadow: 0 0 20px rgba(0, 225, 255, 0.4);
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.card-integrante:hover img {
+  transform: scale(1.05);
+}
+
+.card-integrante h2 {
+  color: #00e1ff;
+  text-shadow: 0 0 10px #00e1ff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.card-integrante p {
+  color: #ccc;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Ajuste geral */
+main {
+  max-width: 1000px;
+  text-align: center;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 225, 255, 0.3);
+  margin-top: 60px;
+}
+
+
