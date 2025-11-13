@@ -432,18 +432,16 @@ function animacao() {
     botaoMute.desenha();
 
     // ----- PONTOS -----
-ctx.font = "bold 24px 'Press Start 2P', cursive";
-ctx.fillStyle = "#00d9ffff";
-ctx.shadowColor = "#006effff";
-ctx.shadowBlur = 8;
-ctx.textAlign = "right";
-ctx.fillText("PONTOS: " + pontuacao, canvas.width - 40, 45);
-ctx.shadowBlur = 0;
-ctx.textAlign = "left";
+    ctx.font = "bold 24px 'Press Start 2P', cursive";
+    ctx.fillStyle = "#00d9ffff";
+    ctx.shadowColor = "#006effff";
+    ctx.shadowBlur = 8;
+    ctx.textAlign = "right";
+    ctx.fillText("PONTOS: " + pontuacao, canvas.width - 40, 45);
+    ctx.shadowBlur = 0;
+    ctx.textAlign = "left";
 
     // ----- GAME OVER -----
-   
-       // ----- GAME OVER -----
     if (!jogoAtivo) {
         ctx.fillStyle = "rgba(0,0,0,0.7)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);

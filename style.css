@@ -30,6 +30,7 @@
 body{
   height: 100vh;
 }
+
 nav {
   position: fixed;
   top: 0;
@@ -91,7 +92,7 @@ nav ul li a:hover {
   color: #00e1ff;
   text-shadow: 0 0 8px #00e1ff;
 }
-/* ===== MENSAGEM ACIMA DO BOTÃO START ===== */
+
 #msgStart {
   position: absolute;
   top: 42%;
@@ -110,7 +111,7 @@ nav ul li a:hover {
   50% { opacity: 0.4; }
 }
 
-/* ===== BOTÃO START ESTILIZADO ===== */
+
 #btnStart {
   position: absolute;
   top: 50%;
@@ -153,6 +154,4 @@ nav ul li a:hover {
     box-shadow: 0 0 45px #00e1ffcc, inset 0 0 20px #00e1ffaa;
   }
 }
-
-
 

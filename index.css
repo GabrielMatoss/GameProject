@@ -1,4 +1,3 @@
-/* ===== NAVBAR ===== */
 nav {
   position: fixed;
   top: 0;
@@ -61,7 +60,6 @@ nav ul li a:hover {
   text-shadow: 0 0 8px #00e1ff;
 }
 
-/* ===== CONTEÚDO PRINCIPAL ===== */
 body {
   margin: 0;
   padding-top: 100px; /* evita sobreposição da navbar */
@@ -89,14 +87,19 @@ h1 {
   to { text-shadow: 0 0 40px #00e1ff; }
 }
 
-main {
-  max-width: 900px;
+
+
+
+.main_container{
+  max-width: 1000px;
   text-align: center;
   padding: 30px;
   background: rgba(0, 0, 0, 0.4);
   border-radius: 20px;
   box-shadow: 0 0 25px rgba(0, 225, 255, 0.3);
+  margin-top: 60px;
 }
+
 
 h2 {
   color: #00e1ff;
@@ -151,7 +154,7 @@ footer {
   text-align: center;
 }
 
-/* ===== SEÇÃO SOBRE ===== */
+
 .sobre-container {
   display: flex;
   align-items: center;
@@ -200,7 +203,6 @@ footer {
   box-shadow: 0 0 35px rgba(0, 225, 255, 0.6);
 }
 
-/* ===== SEÇÃO SOBRE NÓS ===== */
 .sobre-container {
   display: flex;
   justify-content: center;
@@ -252,17 +254,6 @@ footer {
   color: #ccc;
   font-size: 1rem;
   line-height: 1.6;
-}
-
-/* Ajuste geral */
-main {
-  max-width: 1000px;
-  text-align: center;
-  padding: 30px;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0, 225, 255, 0.3);
-  margin-top: 60px;
 }
 
 
