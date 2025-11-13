@@ -1,5 +1,17 @@
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
+const btnStart = document.getElementById("btnStart");
+const msgStart = document.getElementById("msgStart");
+let jogoIniciado = false;
+
+btnStart.addEventListener("click", () => {
+    btnStart.style.display = "none"; // esconde o botão
+    msgStart.style.display = "none"; // esconde a mensagem
+    jogoIniciado = true;
+    iniciarMusica();
+    jogoAtivo = true;
+    animacao(); // inicia o jogo
+});
+
+
 
 // ----- MÚSICA DE FUNDO -----
 let musicaFundo = new Audio("./assets/dancing_robots.mp3");
@@ -58,7 +70,7 @@ let podeAtirar = true;
 // ----- ROBO -----
 let robo = {
     x: 100,
-    y: 605,
+    y: 650,
     vy: 0,
     vida: 100,
     width: 80,
@@ -434,23 +446,32 @@ ctx.textAlign = "left";
 
     // ----- GAME OVER -----
    
+       // ----- GAME OVER -----
     if (!jogoAtivo) {
         ctx.fillStyle = "rgba(0,0,0,0.7)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         // Texto principal (GAME OVER)
         ctx.fillStyle = "white";
         ctx.font = "bold 60px Arial";
         let textoGameOver = "GAME OVER";
         let larguraTextoGO = ctx.measureText(textoGameOver).width;
-        ctx.fillText(textoGameOver, (canvas.width - larguraTextoGO) / 2, canvas.height / 2 - 40);
+        ctx.fillText(textoGameOver, (canvas.width - larguraTextoGO) / 2, canvas.height / 2 - 80);
+
+        // Exibe a pontuação final
+        ctx.fillStyle = "#00ffff";
+        ctx.font = "bold 36px Arial";
+        let textoPontuacao = `SUA PONTUAÇÃO: ${pontuacao}`;
+        let larguraPontuacao = ctx.measureText(textoPontuacao).width;
+        ctx.fillText(textoPontuacao, (canvas.width - larguraPontuacao) / 2, canvas.height / 2 - 20);
 
         // Texto secundário (Pressione R para reiniciar)
         ctx.fillStyle = "yellow";
         ctx.font = "30px Arial";
         let textoReiniciar = "Pressione R para reiniciar";
         let larguraTextoReiniciar = ctx.measureText(textoReiniciar).width;
-        ctx.fillText(textoReiniciar, (canvas.width - larguraTextoReiniciar) / 2, canvas.height / 2 + 40);
-}
+        ctx.fillText(textoReiniciar, (canvas.width - larguraTextoReiniciar) / 2, canvas.height / 2 + 50);
+    }
 
     requestAnimationFrame(animacao);
 }
@@ -517,4 +538,4 @@ canvas.addEventListener("click", (e) => {
 
 // Inicia a animação
  
-animacao();
+

@@ -91,5 +91,68 @@ nav ul li a:hover {
   color: #00e1ff;
   text-shadow: 0 0 8px #00e1ff;
 }
+/* ===== MENSAGEM ACIMA DO BOTÃO START ===== */
+#msgStart {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 30px;
+  color: #00e1ff;
+  text-shadow: 0 0 10px #00e1ff, 0 0 20px #00e1ff;
+  letter-spacing: 2px;
+  z-index: 15;
+}
+
+@keyframes piscarTexto {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ===== BOTÃO START ESTILIZADO ===== */
+#btnStart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 30px;
+  padding: 25px 80px;
+  color: #00e1ff;
+  background: transparent;
+  border: 3px solid #00e1ff;
+  border-radius: 14px;
+  cursor: pointer;
+  z-index: 20;
+  text-shadow: 0 0 10px #00e1ff;
+  box-shadow: 0 0 25px #00e1ff88, inset 0 0 10px #00e1ff33;
+  letter-spacing: 3px;
+  transition: all 0.3s ease;
+
+}
+
+#btnStart:hover {
+  background: #00e1ff;
+  color: #000;
+  text-shadow: none;
+  box-shadow: 0 0 35px #00e1ff, 0 0 70px #00e1ff, inset 0 0 10px #ffffffaa;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+#btnStart:active {
+  transform: translate(-50%, -50%) scale(0.97);
+  filter: brightness(0.9);
+}
+
+@keyframes brilhoNeon {
+  0%, 100% {
+    box-shadow: 0 0 25px #00e1ff88, inset 0 0 10px #00e1ff33;
+  }
+  50% {
+    box-shadow: 0 0 45px #00e1ffcc, inset 0 0 20px #00e1ffaa;
+  }
+}
+
 
 
