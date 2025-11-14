@@ -252,15 +252,31 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
         ativa: true,        // Se a nuvem está ativa
         danoTimer: 0,       // Timer para efeito visual de dano
         tempoProximoRaio: Math.random() * 200 + 150,  // Tempo até próximo raio
+        
+        // NOVO: Propriedade para movimento vertical simples
+        velocidadeVertical: 0.4,    // Velocidade do movimento para cima/baixo
+        indoParaCima: true,         // Direção do movimento vertical
 
-        // Função para mover a nuvem
+        // Função para mover a nuvem - AGORA SIMPLIFICADA
         mover: function () {
             if (!this.ativa || !jogoAtivo) return;  // Só move se ativa e jogo ativo
             
-            // Move na direção definida
+            // Move na direção horizontal definida
             this.x += this.direcao === "esquerda" ? -this.velocidadeX : this.velocidadeX;
-            // Movimento suave de flutuação (usando seno)
-            this.y += Math.sin(Date.now() / 500) * 0.4;
+            
+            // MOVIMENTO VERTICAL SIMPLES: Alterna entre subir e descer
+            if (this.indoParaCima) {
+                this.y -= this.velocidadeVertical;  // Move para cima
+            } else {
+                this.y += this.velocidadeVertical;  // Move para baixo
+            }
+            
+            // Inverte a direção quando chega nos limites
+            if (this.y <= 30) {
+                this.indoParaCima = false;  // Chegou no topo, começa a descer
+            } else if (this.y >= 90) {
+                this.indoParaCima = true;   // Chegou embaixo, começa a subir
+            }
 
             // Se saiu da tela, reseta a posição
             if ((this.direcao === "esquerda" && this.x + this.largura < 0) ||
@@ -290,9 +306,12 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
             this.vida = 4;                     // Restaura vida
             this.ativa = true;                 // Reativa a nuvem
             this.danoTimer = 0;                // Reseta efeito de dano
+            
+            // NOVO: Reseta o movimento vertical também
+            this.indoParaCima = Math.random() > 0.5;  // Direção aleatória ao resetar
         },
 
-        // Função para desenhar a nuvem
+        // Função para desenhar a nuvem (inalterada)
         desenha: function () {
             if (!this.ativa) return;  // Só desenha se estiver ativa
             
@@ -310,7 +329,7 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
             ctx.restore();
         },
 
-        // Função chamada quando a nuvem leva dano
+        // Função chamada quando a nuvem leva dano (inalterada)
         receberDano: function () {
             this.vida--;            // Reduz vida
             this.danoTimer = 10;    // Ativa efeito visual
@@ -318,7 +337,7 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
             if (this.vida <= 0) this.morrer();
         },
 
-        // Função chamada quando a nuvem morre
+        // Função chamada quando a nuvem morre (inalterada)
         morrer: function () {
             this.ativa = false;     // Desativa a nuvem
             pontuacao += 5;         // Adiciona pontos
@@ -342,7 +361,6 @@ function criarNuvem(xInicial, yInicial, velocidade, sprite, direcao) {
     nuvem.img.src = sprite;  // Define a imagem da nuvem
     return nuvem;
 }
-
 // Arrays para gerenciar todas as nuvens
 let todasNuvens = [];    // Todas as nuvens criadas
 let nuvensAtivas = [];   // Nuvens que estão ativas no momento
