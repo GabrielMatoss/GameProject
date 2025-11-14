@@ -185,6 +185,8 @@ function desenharPlataforma() {
     ctx.fillRect(plataforma.x, plataforma.y, plataforma.width, plataforma.height);
 }
 
+//henrik
+//luigi
 // ===== SISTEMA DE RAIOS (ATAQUES DAS NUVENS) =====
 const raioImg = new Image();  // Imagem do raio
 raioImg.src = "./assets/raio.png";
@@ -372,7 +374,10 @@ function gerarNuvensIniciais() {
 }
 // Chama a função para gerar nuvens quando o jogo inicia
 gerarNuvensIniciais();
+//luigi
 
+//eu
+//////////////////////////////////////////
 // ===== SISTEMA DE DIFICULDADE PROGRESSIVA =====
 let tempoDecorrido = 0;              // Contador de frames
 let intervaloDificuldade = 600;      // A cada ~10 segundos (60 FPS * 10)
@@ -399,8 +404,9 @@ function atualizarDificuldade() {
 
 // ===== SISTEMA DE TIROS DO ROBÔ =====
 const imgTiro = new Image();  // Imagem do tiro
-imgTiro.src = "./assets/boleba_energia.png";
+imgTiro.src = "./assets/bola_energia.png";
 let tiros = [];  // Array que armazena todos os tiros ativos
+
 
 // Função para criar um novo tiro
 function criarTiro() {
@@ -460,11 +466,11 @@ let particulas = [];  // Array que armazena todas as partículas
 
 // Função para limitar o número de partículas (evitar lentidão)
 function limitarParticulas() {
-    const LIMITE = 800;  // Número máximo de partículas
+    const limite = 800;  // Número máximo de partículas
     
     // Se excedeu o limite, remove as partículas mais antigas
-    if (particulas.length > LIMITE) 
-        particulas.splice(0, particulas.length - LIMITE);
+    if (particulas.length > limite) 
+        particulas.splice(0, particulas.length - limite);
 }
 
 // ===== SISTEMA DE MORTE E REINÍCIO =====
@@ -528,7 +534,10 @@ function atualizarPosicao() {
     if (robo.x > canvas.width - robo.width / 2) 
         robo.x = canvas.width - robo.width / 2;            // Limite direito
 }
+//eu
+////////////////////////////////////////////////
 
+//luigi
 // ===== LOOP PRINCIPAL DO JOGO =====
 function animacao() {
     // LIMPA A TELA (prepara para novo frame)
