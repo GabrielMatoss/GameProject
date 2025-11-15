@@ -56,13 +56,6 @@ nav .logo img {
   width: 45px;
   height: 45px;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px #00e1ff);
-  animation: flutuarLogo 3s ease-in-out infinite;
-}
-
-@keyframes flutuarLogo {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
 }
 
 nav .logo span {
